@@ -1,5 +1,6 @@
 import json
 from typing import List
+from typing import Union
 
 from jinja2 import Environment, BaseLoader
 
@@ -24,7 +25,7 @@ class Researcher:
         )
 
     @validate_responses
-    def validate_response(self, response: str) -> dict | bool:
+    def validate_response(self, response: str) -> Union[dict, bool]:
 
         if "queries" not in response and "ask_user" not in response:
             return False
@@ -35,7 +36,7 @@ class Researcher:
             }
         
     @retry_wrapper
-    def execute(self, step_by_step_plan: str, contextual_keywords: List[str], project_name: str) -> dict | bool:
+    def execute(self, step_by_step_plan: str, contextual_keywords: List[str], project_name: str) -> Union[dict, bool]:
         contextual_keywords_str = ", ".join(map(lambda k: k.capitalize(), contextual_keywords))
         prompt = self.render(step_by_step_plan, contextual_keywords_str)
         
